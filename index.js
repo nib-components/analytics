@@ -20,7 +20,7 @@ module.exports = {
    * @return {Object} self
    */
   trackPageView: function(url) {
-    this.push('_trackPageview', _.toArray(arguments));
+    this.push('_trackPageview', [].slice.call(arguments));
     return this;
   },
 
@@ -42,7 +42,6 @@ module.exports = {
    * @return {Object}   self
    */
   push: function(method, data) {
-    data = _.compact(data);
     method = this.getMethod(method);
     data.unshift(method);
     window._gaq.push(data);      
