@@ -1,9 +1,8 @@
 {
   "name": "analytics",
-  "version": "0.0.2",
-  "description": "Wrapper for Google Analytics that makes it easier to track events",
+  "version": "0.1.0",
+  "description": "Wrapper for Google Analytics that makes it easier to track events.",
   "scripts": ["index.js"],
   "dependencies": {
-    "visionmedia/debug": "*"
   }
 }
