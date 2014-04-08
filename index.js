@@ -52,7 +52,7 @@ module.exports = {
         p.push(params[i]);
       }
     }
-    
+
     //execute the method
     window.ga.apply(ga, p);
     return this;
@@ -73,14 +73,21 @@ module.exports = {
    * Tracks a custom event. Used for tracking page events like clicking on a tab or interacting with the UI.
    *
    * @param   {object}  data                      The event data
-   * @param   {string}  data.category
-   * @param   {string}  data.action
-   * @param   {string}  [data.label]
-   * @param   {string}  [data.value]
+   * @param   {string}  data.category             The event category
+   * @param   {string}  data.action               The event action
+   * @param   {string}  [data.label]              The event label
+   * @param   {string}  [data.value]              The event value
+   * @param   {string}  [data.noninteraction]     Whether the event is counted towards the bounce rate
    * @return  {object}  self
    */
   trackEvent: function(data) {
-    return this.exec('send', ['event', data.category, data.action, data.label, data.value]);
+
+    var noninteraction;
+    if (data.noninteraction) {
+      noninteraction = {'nonInteraction': 1}
+    }
+
+    return this.exec('send', ['event', data.category, data.action, data.label, data.value, noninteraction]);
   }
 
 };
