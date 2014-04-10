@@ -17,7 +17,7 @@ abstracts us from changes to the script. Currently uses Google's latest universa
     var ga = require('analytics');
 
     ga.trackEvent({
-      'Slider',
-      'Click',
-      'Previous Button'
+      category: 'Slider',
+      action: 'Click',
+      label: 'Previous Button'
     });
