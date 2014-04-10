@@ -45,7 +45,7 @@ module.exports = {
     data = _.compact(data);
     method = this.getMethod(method);
     data.unshift(method);
-    window._gaq.push(data);      
+    window._gaq.push(data);
     debug(data);
     return this;
   },
@@ -53,7 +53,7 @@ module.exports = {
   /**
    * Set the current tracker. This will be prepended
    * to method names when pushing data
-   * @param {String} name 
+   * @param {String} name
    */
   setTracker: function(name) {
     this.tracker = name;
@@ -107,7 +107,7 @@ module.exports = {
   },
 
   /**
-   * Set the account used for the analytics tracking 
+   * Set the account used for the analytics tracking
    * @param {String} id Google analytics ID
    * @return {Object} self
    */
@@ -118,7 +118,7 @@ module.exports = {
 
   /**
    * Set a custom variable. There are 5 available slots, the index represents
-   * which slot to use. The scope determines for how long to store the data. 
+   * which slot to use. The scope determines for how long to store the data.
    * Possible values are 1 for visitor-level, 2 for session-level, and 3 for page-level.
    * @param {Object} data
    * @return {Object} self
@@ -141,7 +141,7 @@ module.exports = {
   /**
    * Get a variable in one of the slots
    * @param  {Number}   index    Variable slot number
-   * @param  {Function} callback 
+   * @param  {Function} callback
    * @return {Object} self
    */
   get: function(index, callback) {
@@ -153,5 +153,4 @@ module.exports = {
     });
     return this;
   }
-
 };
