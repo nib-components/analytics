@@ -54,7 +54,11 @@ module.exports = {
     }
 
     //execute the method
-    window.ga.apply(ga, p);
+    try {
+      window.ga.apply(ga, p);
+    } catch (error) {
+      console.log(error);
+    }
     return this;
   },
 
