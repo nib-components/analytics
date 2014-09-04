@@ -9,7 +9,6 @@ describe('analytics', function() {
       if (window.hasOwnProperty('ga')) delete window.ga;
     });
 
-
     it ('should not queue up methods when ga() IS defined and should not be checking', function() {
 
       assert.equal(0, analytics.queuedMethods.length);
@@ -45,10 +44,12 @@ describe('analytics', function() {
       });
 
       assert.equal(0, analytics.queuedMethods.length);
-      assert.equal(undefined, analytics.queuedMethodsInterval);
+      assert.equal(undefined, analytics.queuedMethodsTimeout);
+      assert.equal(undefined, analytics.queuedMethodsTimeoutTime);
+
     });
 
-    it ('should queue up methods when ga() IS NOT defined, should be checking if it is defined and send them when it is and stop checking', function() {
+    it ('should queue up methods when ga() IS NOT defined, should be checking if it is defined and send them when it is and stop checking', function(done) {
       assert.equal(0, analytics.queuedMethods.length);
 
       analytics.trackEvent({
@@ -64,7 +65,8 @@ describe('analytics', function() {
       });
 
       assert.equal(2, analytics.queuedMethods.length);
-      assert.notEqual(undefined, analytics.queuedMethodsInterval);
+      assert.notEqual(undefined, analytics.queuedMethodsTimeout);
+      assert.notEqual(undefined, analytics.queuedMethodsTimeoutTime);
 
       var count = 0;
       window.ga = function() {
@@ -79,8 +81,10 @@ describe('analytics', function() {
 
       //give the interval time to finish
       setTimeout(function() {
-        assert.equal(undefined, analytics.queuedMethodsInterval);
-      }, 100);
+        assert.equal(undefined, analytics.queuedMethodsTimeout);
+        assert.equal(undefined, analytics.queuedMethodsTimeoutTime);
+        done();
+      }, analytics.queuedMethodsTimeoutTime);
 
     });
 

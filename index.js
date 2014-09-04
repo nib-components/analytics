@@ -73,22 +73,49 @@ module.exports = {
       //queue the GA event
       this.queuedMethods.unshift(p);
 
-      //start checking whether we can process the queue
-      if (!this.queuedMethodsInterval) {
-        this.queuedMethodsInterval = setInterval(function() {
+      //if we're not already waiting for ga() to be defined
+      if (!this.queuedMethodsTimeout) {
+
+        //set how long we should wait for
+        self.queuedMethodsTimeoutTime = 100;
+
+        function processQueuedMethods() {
+
+          //check if ga() is defined
           if (window.hasOwnProperty('ga')) {
 
-            //stop trying to process the queue
-            clearInterval(self.queuedMethodsInterval);
-            delete self.queuedMethodsInterval;
+            //stop waiting
+            delete self.queuedMethodsTimeout;
+            delete self.queuedMethodsTimeoutTime;
 
             //execute the queued methods
             while (self.queuedMethods.length > 0) {
               window.ga.apply(window.ga, self.queuedMethods.pop());
             }
 
+          } else {
+
+            //if we haven't waited more than (100+100x2+100x4..)s then keep waiting, but wait a bit longer
+            if (self.queuedMethodsTimeoutTime < 1000*60*5) {
+
+              //wait a bit longer this time
+              self.queuedMethodsTimeoutTime *= 2;
+              self.queuedMethodsTimeout = setTimeout(processQueuedMethods, self.queuedMethodsTimeoutTime);
+
+            } else {
+
+              //stop waiting
+              delete self.queuedMethodsTimeout;
+              delete self.queuedMethodsTimeoutTime;
+
+            }
+
           }
-        }, 100);
+        }
+
+        //start waiting for ga() to be defined
+        processQueuedMethods();
+
       }
 
     }
