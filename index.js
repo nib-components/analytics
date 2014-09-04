@@ -13,6 +13,12 @@ module.exports = {
   tracker: undefined,
 
   /**
+   * The queued methods waiting for the `ga` function to be available for execution
+   * @type  {string}
+   */
+  queuedMethods: [],
+
+  /**
    * Set the current tracker
    *
    * @param   {string}  name                      The tracker name
@@ -44,6 +50,7 @@ module.exports = {
    * @return  {object}   self
    */
   exec: function(method, params) {
+    var self = this;
 
     //get the parameters (excluding anything which evaluates to undefined]
     var p = [this.getMethod(method)];
@@ -53,12 +60,39 @@ module.exports = {
       }
     }
 
-    //execute the method
-    try {
-      window.ga.apply(ga, p);
-    } catch (error) {
-      console.log(error);
+    //check if the GA script has loaded
+    if (window.hasOwnProperty('ga')) {
+
+      //execute the GA event
+      window.ga.apply(window.ga, p);
+
+    } else {
+
+      //FIXME: added a queue because we load analytics at the bottom of the body via GTM
+
+      //queue the GA event
+      this.queuedMethods.unshift(p);
+
+      //start checking whether we can process the queue
+      if (!this.queuedMethodsInterval) {
+        this.queuedMethodsInterval = setInterval(function() {
+          if (window.hasOwnProperty('ga')) {
+
+            //stop trying to process the queue
+            clearInterval(self.queuedMethodsInterval);
+            delete self.queuedMethodsInterval;
+
+            //execute the queued methods
+            while (self.queuedMethods.length > 0) {
+              window.ga.apply(window.ga, self.queuedMethods.pop());
+            }
+
+          }
+        }, 100);
+      }
+
     }
+
     return this;
   },
 
