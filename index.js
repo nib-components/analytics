@@ -61,7 +61,7 @@ module.exports = {
     }
 
     //check if the GA script has loaded
-    if (window.hasOwnProperty('ga')) {
+    if (typeof(window.ga) === 'function') {
 
       //execute the GA event
       window.ga.apply(window.ga, p);
@@ -82,7 +82,7 @@ module.exports = {
         function processQueuedMethods() {
 
           //check if ga() is defined
-          if (window.hasOwnProperty('ga')) {
+          if (typeof(window.ga) === 'function') {
 
             //stop waiting
             delete self.queuedMethodsTimeout;
