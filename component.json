@@ -1,6 +1,6 @@
 {
   "name": "analytics",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "description": "Wrapper for Google Analytics that makes it easier to track events.",
   "scripts": ["index.js"],
   "development": {
