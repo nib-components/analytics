@@ -59,6 +59,10 @@ module.exports = {
         p.push(params[i]);
       }
     }
+    
+    if (typeof window === undefined) {
+      return; //noop
+    }
 
     //check if the GA script has loaded
     if (typeof(window.ga) === 'function') {
