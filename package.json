@@ -1,6 +1,6 @@
 {
   "name": "@nib-components/analytics",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Wrapper for Google Analytics that makes it easier to track events.",
   "main": "index.js",
   "repository": {
