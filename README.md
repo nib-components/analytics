@@ -3,6 +3,9 @@
 A wrapper for [Google Analytics](https://developers.google.com/analytics/devguides/collection/analyticsjs/) that
 abstracts us from changes to the script. Currently uses Google's latest universal tracking scripts.
 
+## Installation
+npm install @nib-components/analytics --save
+
 ## Methods
 
 ### trackEvent(data)
